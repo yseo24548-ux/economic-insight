@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:version='2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+  <title><data:view.title.escaped/></title>
+  <b:include data='blog' name='all-head-content'/>
+  <b:skin><![CDATA[
+/* =========================================================
+   Economic Insight — 깔끔·심플 테마
+   날짜 체계: 연 > 월 > 주 > 일
+   ========================================================= */
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f6f7f9;
+  --text: #1c1e21;
+  --text-soft: #6b7280;
+  --line: #e5e7eb;
+  --accent: #2456c4;
+  --accent-soft: #eef2fb;
+  --radius: 10px;
+  --font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+          "Pretendard", "Noto Sans KR", "Malgun Gothic", "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181c;
+    --bg-soft: #1e2126;
+    --text: #e8eaed;
+    --text-soft: #9aa0a6;
+    --line: #2d3138;
+    --accent: #7ba0f0;
+    --accent-soft: #232a3a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; height: auto; }
+
+/* ---------- 레이아웃 ---------- */
+
+.site {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.site-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 48px;
+  align-items: start;
+  padding: 32px 0 64px;
+}
+
+/* ---------- 헤더 ---------- */
+
+.site-header {
+  padding: 40px 0 24px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.site-title a { color: var(--text); }
+.site-title a:hover { text-decoration: none; color: var(--accent); }
+
+.site-desc {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+/* ---------- 타임라인 (연 > 월 > 주 > 일) ---------- */
+
+.page-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-soft);
+}
+
+.tl-year { margin-bottom: 8px; }
+
+.tl-year-h {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  margin: 0 0 4px;
+  padding: 10px 0 8px;
+  background: var(--bg);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  border-bottom: 2px solid var(--text);
+}
+
+.tl-month { margin: 20px 0 4px; padding-left: 4px; }
+
+.tl-month-h {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.tl-week {
+  margin: 12px 0 12px 8px;
+  padding-left: 16px;
+  border-left: 2px solid var(--line);
+}
+
+.tl-week-h {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+}
+
+.tl-day { margin: 0 0 14px; }
+
+.tl-day-h {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.tl-day-h::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 1px;
+}
+
+/* ---------- 글 카드 ---------- */
+
+.post-card {
+  padding: 14px 16px;
+  margin: 0 0 8px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease;
+}
+
+.post-card:hover { border-color: var(--accent); }
+
+.post-card-link { display: block; color: inherit; }
+.post-card-link:hover { text-decoration: none; }
+
+.post-card-title {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.post-card:hover .post-card-title { color: var(--accent); }
+
+.post-card-snippet {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-card-date {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+}
+
+/* ---------- 개별 글 ---------- */
+
+.post-single .post-title {
+  margin: 8px 0 12px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.post-date-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.post-week {
+  padding: 1px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+}
+
+.post-body {
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.post-body h2 { font-size: 1.35rem; margin: 2em 0 0.6em; }
+.post-body h3 { font-size: 1.15rem; margin: 1.6em 0 0.5em; }
+.post-body p { margin: 0 0 1.1em; }
+.post-body blockquote {
+  margin: 1.2em 0;
+  padding: 10px 18px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--text-soft);
+}
+.post-body pre {
+  padding: 14px;
+  overflow-x: auto;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+}
+.post-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.2em 0;
+  font-size: 0.92rem;
+}
+.post-body th, .post-body td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+}
+.post-body th { background: var(--bg-soft); }
+
+/* ---------- 페이저 ---------- */
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+
+.pager a {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+}
+
+.pager a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pager-home { color: var(--text-soft) !important; border: none !important; }
+
+/* ---------- 사이드바: 글 보관함 ---------- */
+
+.site-side {
+  position: sticky;
+  top: 20px;
+  font-size: 0.9rem;
+}
+
+.archive-box {
+  padding: 18px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.archive-title {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.archive-sub {
+  margin: 0 0 12px;
+  font-size: 0.76rem;
+  color: var(--text-soft);
+}
+
+.archive-tree summary {
+  cursor: pointer;
+  padding: 4px 0;
+  font-weight: 700;
+  list-style: none;
+}
+
+.archive-tree summary::-webkit-details-marker { display: none; }
+
+.archive-tree summary::before {
+  content: '▸';
+  display: inline-block;
+  width: 14px;
+  color: var(--text-soft);
+  transition: transform 0.15s ease;
+}
+
+.archive-tree details[open] > summary::before { transform: rotate(90deg); }
+
+.ar-count {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.ar-month { margin-left: 14px; }
+.ar-month > summary { font-weight: 600; }
+
+.ar-week { margin: 4px 0 8px 28px; }
+
+.ar-week-h {
+  margin: 6px 0 2px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.ar-day-group { margin: 2px 0 6px; }
+
+.ar-day {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin: 2px 0;
+}
+
+.ar-day-group ul {
+  margin: 0;
+  padding-left: 14px;
+  list-style: none;
+}
+
+.ar-day-group li {
+  margin: 1px 0;
+  line-height: 1.5;
+  font-size: 0.85rem;
+}
+
+.ar-day-group a { color: var(--text); }
+.ar-day-group a:hover { color: var(--accent); }
+
+.archive-empty { color: var(--text-soft); font-size: 0.85rem; }
+
+/* ---------- 댓글 ---------- */
+
+.comments { margin-top: 48px; }
+
+.comments-h {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.comment-list { list-style: none; margin: 0 0 24px; padding: 0; }
+
+.comment {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.comment-author { margin: 0 0 4px; font-weight: 700; font-size: 0.9rem; }
+.comment-time { font-weight: 400; color: var(--text-soft); font-size: 0.8rem; margin-left: 8px; }
+.comment-body { font-size: 0.95rem; }
+
+/* ---------- 오류/빈 상태 ---------- */
+
+.error-page, .empty-state {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--text-soft);
+}
+
+.error-page h1 { font-size: 1.3rem; color: var(--text); }
+
+/* ---------- 푸터 ---------- */
+
+.site-footer {
+  padding: 24px 0 40px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.site-footer .widget { margin: 0; }
+
+/* ---------- 반응형 ---------- */
+
+@media (max-width: 900px) {
+  .site-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .site-side { position: static; order: 2; }
+  .site-main { order: 1; }
+  .site-header { padding: 28px 0 18px; }
+  .post-single .post-title { font-size: 1.45rem; }
+}
+]]></b:skin>
+</head>
+
+<body expr:class='data:view.isSingleItem ? &quot;view-item&quot; : &quot;view-index&quot;'>
+  <div class='site'>
+
+    <!-- ===== 헤더 ===== -->
+    <b:section class='site-header' id='header' maxwidgets='1' showaddelement='no'>
+      <b:widget id='Header1' locked='true' title='제목' type='Header' version='2'>
+        <b:includable id='main'>
+          <b:if cond='data:view.isHomepage'>
+            <h1 class='site-title'><a expr:href='data:blog.homepageUrl'><data:title/></a></h1>
+          <b:else/>
+            <p class='site-title'><a expr:href='data:blog.homepageUrl'><data:title/></a></p>
+          </b:if>
+          <b:if cond='data:description != ""'>
+            <p class='site-desc'><data:description/></p>
+          </b:if>
+        </b:includable>
+      </b:widget>
+    </b:section>
+
+    <div class='site-layout'>
+
+      <!-- ===== 본문 ===== -->
+      <main class='site-main'>
+        <b:section id='main' maxwidgets='1' showaddelement='no'>
+          <b:widget id='Blog1' locked='true' title='블로그 게시물' type='Blog' version='2'>
+            <b:includable id='main'>
+
+              <!-- 오류 페이지 -->
+              <b:if cond='data:view.isError'>
+                <div class='error-page'>
+                  <h1>페이지를 찾을 수 없습니다</h1>
+                  <p><a expr:href='data:blog.homepageUrl'>홈으로 돌아가기</a></p>
+                </div>
+
+              <!-- 개별 글 / 정적 페이지 -->
+              <b:elseif cond='data:view.isSingleItem'/>
+                <b:loop values='data:posts' var='post'>
+                  <article class='post post-single'>
+                    <header class='post-header'>
+                      <h1 class='post-title'><data:post.title/></h1>
+                      <div class='post-date-line'>
+                        <time class='post-date' expr:datetime='data:post.date.iso8601'>
+                          <b:eval expr='data:post.date format "yyyy년 M월 d일 (EEE)"'/>
+                        </time>
+                        <span class='post-week js-week' expr:data-date='data:post.date.iso8601'></span>
+                      </div>
+                    </header>
+                    <div class='post-body'>
+                      <data:post.body/>
+                    </div>
+                  </article>
+
+                  <b:if cond='data:view.isPost and data:post.allowComments'>
+                    <section class='comments' id='comments'>
+                      <h2 class='comments-h'>댓글</h2>
+                      <b:if cond='data:post.numberOfComments > 0'>
+                        <ol class='comment-list'>
+                          <b:loop values='data:post.comments' var='comment'>
+                            <li class='comment'>
+                              <p class='comment-author'>
+                                <data:comment.author/>
+                                <span class='comment-time'><data:comment.timestamp/></span>
+                              </p>
+                              <div class='comment-body'><data:comment.body/></div>
+                            </li>
+                          </b:loop>
+                        </ol>
+                      </b:if>
+                      <div class='comment-form'>
+                        <a name='comment-form'/>
+                        <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' frameborder='0' height='260' id='comment-editor' name='comment-editor' src='' width='100%'/>
+                        <data:post.cmtfpIframe/>
+                        <script type='text/javascript'>
+                          BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+                        </script>
+                      </div>
+                    </section>
+                  </b:if>
+                </b:loop>
+
+                <nav class='pager'>
+                  <b:if cond='data:newerPageUrl'>
+                    <a class='pager-newer' expr:href='data:newerPageUrl'>&#8592; 다음 글</a>
+                  <b:else/>
+                    <span></span>
+                  </b:if>
+                  <a class='pager-home' expr:href='data:blog.homepageUrl'>목록</a>
+                  <b:if cond='data:olderPageUrl'>
+                    <a class='pager-older' expr:href='data:olderPageUrl'>이전 글 &#8594;</a>
+                  <b:else/>
+                    <span></span>
+                  </b:if>
+                </nav>
+
+              <!-- 목록 (홈 / 검색 / 보관함) -->
+              <b:else/>
+                <b:if cond='data:view.search.query'>
+                  <h1 class='page-title'>&quot;<data:view.search.query/>&quot; 검색 결과</h1>
+                </b:if>
+                <b:if cond='data:view.isArchive'>
+                  <h1 class='page-title'><data:view.title/></h1>
+                </b:if>
+
+                <b:if cond='data:posts.empty'>
+                  <div class='empty-state'>
+                    <p>게시글이 없습니다.</p>
+                  </div>
+                <b:else/>
+                  <div class='timeline' id='timeline'>
+                    <b:loop values='data:posts' var='post'>
+                      <article class='post-card' expr:data-date='data:post.date.iso8601'>
+                        <a class='post-card-link' expr:href='data:post.url'>
+                          <h2 class='post-card-title'><data:post.title/></h2>
+                          <p class='post-card-snippet'>
+                            <b:eval expr='snippet(data:post.body, {length: 130, links: false, linebreaks: false})'/>
+                          </p>
+                          <time class='post-card-date' expr:datetime='data:post.date.iso8601'>
+                            <b:eval expr='data:post.date format "yyyy년 M월 d일 (EEE)"'/>
+                          </time>
+                        </a>
+                      </article>
+                    </b:loop>
+                  </div>
+
+                  <nav class='pager'>
+                    <b:if cond='data:newerPageUrl'>
+                      <a class='pager-newer' expr:href='data:newerPageUrl'>&#8592; 최신 글</a>
+                    <b:else/>
+                      <span></span>
+                    </b:if>
+                    <b:if cond='data:olderPageUrl'>
+                      <a class='pager-older' expr:href='data:olderPageUrl'>지난 글 &#8594;</a>
+                    <b:else/>
+                      <span></span>
+                    </b:if>
+                  </nav>
+                </b:if>
+              </b:if>
+
+            </b:includable>
+          </b:widget>
+        </b:section>
+      </main>
+
+      <!-- ===== 사이드바: 연·월·주·일 글 보관함 ===== -->
+      <aside class='site-side'>
+        <div class='archive-box'>
+          <h2 class='archive-title'>글 보관함</h2>
+          <p class='archive-sub'>연 &#183; 월 &#183; 주 &#183; 일 기준 분류</p>
+          <div class='archive-tree' id='archive-tree'>
+            <p class='archive-empty'>불러오는 중&#8230;</p>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- ===== 푸터 ===== -->
+    <footer class='site-footer'>
+      <b:section id='footer' showaddelement='no'>
+        <b:widget id='Attribution1' locked='true' title='' type='Attribution' version='2'/>
+      </b:section>
+    </footer>
+
+  </div>
+
+  <script type='text/javascript'>
+  //<![CDATA[
+  (function () {
+    'use strict';
+
+    var DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
+
+    // 주차 규칙: 1~7일 = 1주차, 8~14일 = 2주차, ... (한눈에 예측 가능한 단순 규칙)
+    function weekOfMonth(d) {
+      return Math.ceil(d.getDate() / 7);
+    }
+
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text) n.textContent = text;
+      return n;
+    }
+
+    /* ---------- 1. 목록 페이지: 글 카드를 연 > 월 > 주 > 일로 그룹핑 ---------- */
+    function buildTimeline() {
+      var timeline = document.getElementById('timeline');
+      if (!timeline) return;
+      var cards = Array.prototype.slice.call(timeline.querySelectorAll('.post-card'));
+      if (!cards.length) return;
+
+      var frag = document.createDocumentFragment();
+      var curY = null, curM = null, curW = null, curD = null;
+      var ySec = null, mSec = null, wSec = null, dPosts = null;
+
+      cards.forEach(function (card) {
+        var d = new Date(card.getAttribute('data-date'));
+        if (isNaN(d.getTime())) { frag.appendChild(card); return; }
+        var y = d.getFullYear();
+        var m = d.getMonth() + 1;
+        var w = weekOfMonth(d);
+        var day = d.getDate();
+
+        if (y !== curY) {
+          ySec = el('section', 'tl-year');
+          ySec.appendChild(el('h2', 'tl-year-h', y + '년'));
+          frag.appendChild(ySec);
+          curY = y; curM = null; curW = null; curD = null;
+        }
+        if (m !== curM) {
+          mSec = el('section', 'tl-month');
+          mSec.appendChild(el('h3', 'tl-month-h', m + '월'));
+          ySec.appendChild(mSec);
+          curM = m; curW = null; curD = null;
+        }
+        if (w !== curW) {
+          wSec = el('section', 'tl-week');
+          wSec.appendChild(el('h4', 'tl-week-h', w + '주차'));
+          mSec.appendChild(wSec);
+          curW = w; curD = null;
+        }
+        if (day !== curD) {
+          var dSec = el('section', 'tl-day');
+          dSec.appendChild(el('h5', 'tl-day-h', day + '일 (' + DAY_NAMES[d.getDay()] + ')'));
+          dPosts = el('div', 'tl-day-posts');
+          dSec.appendChild(dPosts);
+          wSec.appendChild(dSec);
+          curD = day;
+        }
+        // 카드 안의 개별 날짜 표기는 그룹 헤더와 중복되므로 숨김
+        var t = card.querySelector('.post-card-date');
+        if (t) t.style.display = 'none';
+        dPosts.appendChild(card);
+      });
+
+      timeline.innerHTML = '';
+      timeline.appendChild(frag);
+    }
+
+    /* ---------- 2. 개별 글: "M월 N주차" 배지 채우기 ---------- */
+    function fillWeekBadges() {
+      var spans = document.querySelectorAll('.js-week');
+      for (var i = 0; i < spans.length; i++) {
+        var d = new Date(spans[i].getAttribute('data-date'));
+        if (isNaN(d.getTime())) continue;
+        spans[i].textContent = (d.getMonth() + 1) + '월 ' + weekOfMonth(d) + '주차';
+      }
+    }
+
+    /* ---------- 3. 사이드바: 전체 글을 연 > 월 > 주 > 일 트리로 ---------- */
+    function buildArchive() {
+      var box = document.getElementById('archive-tree');
+      if (!box) return;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/feeds/posts/summary?alt=json&max-results=500', true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+        if (xhr.status !== 200) {
+          box.innerHTML = '';
+          box.appendChild(el('p', 'archive-empty', '보관함을 불러오지 못했습니다.'));
+          return;
+        }
+        var entries;
+        try {
+          var data = JSON.parse(xhr.responseText);
+          entries = (data.feed && data.feed.entry) || [];
+        } catch (e) {
+          entries = [];
+        }
+        renderArchive(box, entries);
+      };
+      xhr.send();
+    }
+
+    function renderArchive(box, entries) {
+      box.innerHTML = '';
+      if (!entries.length) {
+        box.appendChild(el('p', 'archive-empty', '게시글이 없습니다.'));
+        return;
+      }
+
+      var posts = [];
+      entries.forEach(function (entry) {
+        var link = '';
+        (entry.link || []).forEach(function (l) {
+          if (l.rel === 'alternate') link = l.href;
+        });
+        var d = new Date(entry.published.$t);
+        if (!link || isNaN(d.getTime())) return;
+        posts.push({ title: entry.title.$t || '(제목 없음)', url: link, date: d });
+      });
+
+      posts.sort(function (a, b) { return b.date - a.date; });
+
+      // 연 > 월 > 주 > 일 중첩 맵 구성 (표시 순서 유지를 위해 배열 사용)
+      var years = [];
+      function getOrPush(arr, key, make) {
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].key === key) return arr[i];
+        }
+        var node = make();
+        node.key = key;
+        arr.push(node);
+        return node;
+      }
+
+      posts.forEach(function (p) {
+        var y = p.date.getFullYear();
+        var m = p.date.getMonth() + 1;
+        var w = weekOfMonth(p.date);
+        var day = p.date.getDate();
+        var yNode = getOrPush(years, y, function () { return { count: 0, months: [] }; });
+        yNode.count++;
+        var mNode = getOrPush(yNode.months, m, function () { return { count: 0, weeks: [] }; });
+        mNode.count++;
+        var wNode = getOrPush(mNode.weeks, w, function () { return { days: [] }; });
+        var dNode = getOrPush(wNode.days, day, function () { return { dow: DAY_NAMES[p.date.getDay()], posts: [] }; });
+        dNode.posts.push(p);
+      });
+
+      var nowYear = new Date().getFullYear();
+
+      years.forEach(function (yNode) {
+        var yDet = el('details', 'ar-year');
+        if (yNode.key === nowYear) yDet.open = true;
+        var ySum = el('summary', null, yNode.key + '년');
+        ySum.appendChild(el('span', 'ar-count', yNode.count + '개'));
+        yDet.appendChild(ySum);
+
+        yNode.months.forEach(function (mNode, mi) {
+          var mDet = el('details', 'ar-month');
+          if (yNode.key === nowYear && mi === 0) mDet.open = true;
+          var mSum = el('summary', null, mNode.key + '월');
+          mSum.appendChild(el('span', 'ar-count', mNode.count + '개'));
+          mDet.appendChild(mSum);
+
+          mNode.weeks.forEach(function (wNode) {
+            var wDiv = el('div', 'ar-week');
+            wDiv.appendChild(el('p', 'ar-week-h', wNode.key + '주차'));
+
+            wNode.days.forEach(function (dNode) {
+              var dg = el('div', 'ar-day-group');
+              dg.appendChild(el('p', 'ar-day', dNode.key + '일 (' + dNode.dow + ')'));
+              var ul = el('ul');
+              dNode.posts.forEach(function (p) {
+                var li = el('li');
+                var a = el('a', null, p.title);
+                a.href = p.url;
+                li.appendChild(a);
+                ul.appendChild(li);
+              });
+              dg.appendChild(ul);
+              wDiv.appendChild(dg);
+            });
+
+            mDet.appendChild(wDiv);
+          });
+
+          yDet.appendChild(mDet);
+        });
+
+        box.appendChild(yDet);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        buildTimeline();
+        fillWeekBadges();
+        buildArchive();
+      });
+    } else {
+      buildTimeline();
+      fillWeekBadges();
+      buildArchive();
+    }
+  })();
+  //]]>
+  </script>
+</body>
+</html>
