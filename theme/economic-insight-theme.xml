@@ -7,8 +7,8 @@
   <b:include data='blog' name='all-head-content'/>
   <b:skin><![CDATA[
 /* =========================================================
-   Economic Insight — 깔끔·심플 테마
-   날짜 체계: 연 > 월 > 주 > 일
+   Economic Insight theme
+   Date hierarchy: year > month > week > day
    ========================================================= */
 
 :root {
@@ -55,7 +55,7 @@ a:hover { text-decoration: underline; }
 
 img { max-width: 100%; height: auto; }
 
-/* ---------- 레이아웃 ---------- */
+/* ---------- layout ---------- */
 
 .site {
   max-width: 1080px;
@@ -71,7 +71,7 @@ img { max-width: 100%; height: auto; }
   padding: 32px 0 64px;
 }
 
-/* ---------- 헤더 ---------- */
+/* ---------- header ---------- */
 
 .site-header {
   padding: 40px 0 24px;
@@ -95,7 +95,7 @@ img { max-width: 100%; height: auto; }
   font-size: 0.95rem;
 }
 
-/* ---------- 타임라인 (연 > 월 > 주 > 일) ---------- */
+/* ---------- timeline: year > month > week > day ---------- */
 
 .page-title {
   font-size: 1.15rem;
@@ -167,7 +167,7 @@ img { max-width: 100%; height: auto; }
   vertical-align: 1px;
 }
 
-/* ---------- 글 카드 ---------- */
+/* ---------- post cards ---------- */
 
 .post-card {
   padding: 14px 16px;
@@ -210,7 +210,7 @@ img { max-width: 100%; height: auto; }
   color: var(--text-soft);
 }
 
-/* ---------- 개별 글 ---------- */
+/* ---------- single post ---------- */
 
 .post-single .post-title {
   margin: 8px 0 12px;
@@ -278,7 +278,7 @@ img { max-width: 100%; height: auto; }
 }
 .post-body th { background: var(--bg-soft); }
 
-/* ---------- 페이저 ---------- */
+/* ---------- pager ---------- */
 
 .pager {
   display: flex;
@@ -305,7 +305,7 @@ img { max-width: 100%; height: auto; }
 
 .pager-home { color: var(--text-soft) !important; border: none !important; }
 
-/* ---------- 사이드바: 글 보관함 ---------- */
+/* ---------- sidebar archive ---------- */
 
 .site-side {
   position: sticky;
@@ -342,7 +342,7 @@ img { max-width: 100%; height: auto; }
 .archive-tree summary::-webkit-details-marker { display: none; }
 
 .archive-tree summary::before {
-  content: '▸';
+  content: '\25B8';
   display: inline-block;
   width: 14px;
   color: var(--text-soft);
@@ -395,7 +395,7 @@ img { max-width: 100%; height: auto; }
 
 .archive-empty { color: var(--text-soft); font-size: 0.85rem; }
 
-/* ---------- 오류/빈 상태 ---------- */
+/* ---------- error / empty ---------- */
 
 .error-page, .empty-state {
   text-align: center;
@@ -405,7 +405,7 @@ img { max-width: 100%; height: auto; }
 
 .error-page h1 { font-size: 1.3rem; color: var(--text); }
 
-/* ---------- 푸터 ---------- */
+/* ---------- footer ---------- */
 
 .site-footer {
   padding: 24px 0 40px;
@@ -417,7 +417,7 @@ img { max-width: 100%; height: auto; }
 
 .site-footer .widget { margin: 0; }
 
-/* ---------- 반응형 ---------- */
+/* ---------- responsive ---------- */
 
 @media (max-width: 900px) {
   .site-layout {
@@ -432,10 +432,10 @@ img { max-width: 100%; height: auto; }
 ]]></b:skin>
 </head>
 
-<body expr:class='data:view.isSingleItem ? &quot;view-item&quot; : &quot;view-index&quot;'>
+<body expr:class='data:view.isError ? &quot;view-error&quot; : (data:view.isSingleItem ? &quot;view-item&quot; : &quot;view-index&quot;)'>
   <div class='site'>
 
-    <!-- ===== 헤더 ===== -->
+    <!-- ===== header ===== -->
     <b:section class='site-header' id='header' maxwidgets='1' showaddelement='no'>
       <b:widget id='Header1' locked='true' title='제목' type='Header' version='2'>
         <b:includable id='main'>
@@ -453,21 +453,13 @@ img { max-width: 100%; height: auto; }
 
     <div class='site-layout'>
 
-      <!-- ===== 본문 ===== -->
+      <!-- ===== main ===== -->
       <main class='site-main'>
         <b:section id='main' maxwidgets='1' showaddelement='no'>
           <b:widget id='Blog1' locked='true' title='블로그 게시물' type='Blog' version='2'>
             <b:includable id='main'>
 
-              <!-- 오류 페이지 -->
-              <b:if cond='data:view.isError'>
-                <div class='error-page'>
-                  <h1>페이지를 찾을 수 없습니다</h1>
-                  <p><a expr:href='data:blog.homepageUrl'>홈으로 돌아가기</a></p>
-                </div>
-
-              <!-- 개별 글 / 정적 페이지 -->
-              <b:elseif cond='data:view.isSingleItem'/>
+              <b:if cond='data:view.isSingleItem'>
                 <b:loop values='data:posts' var='post'>
                   <article class='post post-single'>
                     <header class='post-header'>
@@ -499,11 +491,7 @@ img { max-width: 100%; height: auto; }
                   </b:if>
                 </nav>
 
-              <!-- 목록 (홈 / 검색 / 보관함) -->
               <b:else/>
-                <b:if cond='data:view.search.query'>
-                  <h1 class='page-title'>&quot;<data:view.search.query/>&quot; 검색 결과</h1>
-                </b:if>
                 <b:if cond='data:view.isArchive'>
                   <h1 class='page-title'><data:view.title/></h1>
                 </b:if>
@@ -541,9 +529,12 @@ img { max-width: 100%; height: auto; }
             </b:includable>
           </b:widget>
         </b:section>
+
+        <!-- 위젯이 어떤 이유로든 본문을 출력하지 못하면 스크립트가 피드에서 직접 채우는 예비 영역 -->
+        <div id='content-fallback'></div>
       </main>
 
-      <!-- ===== 사이드바: 연·월·주·일 글 보관함 ===== -->
+      <!-- ===== sidebar: year/month/week/day archive ===== -->
       <aside class='site-side'>
         <div class='archive-box'>
           <h2 class='archive-title'>글 보관함</h2>
@@ -556,7 +547,7 @@ img { max-width: 100%; height: auto; }
 
     </div>
 
-    <!-- ===== 푸터 ===== -->
+    <!-- ===== footer ===== -->
     <footer class='site-footer'>
       <b:section id='footer' showaddelement='no'>
         <b:widget id='Attribution1' locked='true' title='' type='Attribution' version='2'>
@@ -580,7 +571,7 @@ img { max-width: 100%; height: auto; }
 
     var DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
-    // 주차 규칙: 1~7일 = 1주차, 8~14일 = 2주차, ... (한눈에 예측 가능한 단순 규칙)
+    // 주차 규칙: 1~7일 = 1주차, 8~14일 = 2주차, ...
     function weekOfMonth(d) {
       return Math.ceil(d.getDate() / 7);
     }
@@ -592,25 +583,44 @@ img { max-width: 100%; height: auto; }
       return n;
     }
 
-    /* ---------- 1. 목록 페이지: 글 카드를 연 > 월 > 주 > 일로 그룹핑 ---------- */
-    function buildTimeline() {
-      var timeline = document.getElementById('timeline');
-      if (!timeline) return;
-      var cards = Array.prototype.slice.call(timeline.querySelectorAll('.post-card'));
-      if (!cards.length) {
-        var empty = el('div', 'empty-state');
-        empty.appendChild(el('p', null, '게시글이 없습니다.'));
-        timeline.appendChild(empty);
-        return;
-      }
+    function hasClass(node, cls) {
+      return (' ' + node.className + ' ').indexOf(' ' + cls + ' ') !== -1;
+    }
 
+    function fetchJson(path, cb) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', path, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+        if (xhr.status !== 200) { cb(null); return; }
+        try {
+          var data = JSON.parse(xhr.responseText);
+          cb((data.feed && data.feed.entry) || []);
+        } catch (e) {
+          cb(null);
+        }
+      };
+      xhr.send();
+    }
+
+    function altLink(entry) {
+      var link = '';
+      (entry.link || []).forEach(function (l) {
+        if (l.rel === 'alternate') link = l.href;
+      });
+      return link;
+    }
+
+    /* ---------- 공통: 연 > 월 > 주 > 일 그룹핑 ---------- */
+    // items: [{date: Date, node: Element}] (최신순)
+    function makeGrouped(items) {
       var frag = document.createDocumentFragment();
       var curY = null, curM = null, curW = null, curD = null;
       var ySec = null, mSec = null, wSec = null, dPosts = null;
 
-      cards.forEach(function (card) {
-        var d = new Date(card.getAttribute('data-date'));
-        if (isNaN(d.getTime())) { frag.appendChild(card); return; }
+      items.forEach(function (item) {
+        var d = item.date;
+        if (!d || isNaN(d.getTime())) { frag.appendChild(item.node); return; }
         var y = d.getFullYear();
         var m = d.getMonth() + 1;
         var w = weekOfMonth(d);
@@ -642,17 +652,43 @@ img { max-width: 100%; height: auto; }
           wSec.appendChild(dSec);
           curD = day;
         }
-        // 카드 안의 개별 날짜 표기는 그룹 헤더와 중복되므로 숨김
+        dPosts.appendChild(item.node);
+      });
+
+      return frag;
+    }
+
+    /* ---------- 1. 목록: 서버가 출력한 카드를 그룹핑 ---------- */
+    function buildTimeline() {
+      var timeline = document.getElementById('timeline');
+      if (!timeline) return;
+      var cards = Array.prototype.slice.call(timeline.querySelectorAll('.post-card'));
+
+      if (!cards.length) {
+        var empty = el('div', 'empty-state');
+        if (hasClass(document.body, 'view-error')) {
+          empty.appendChild(el('p', null, '페이지를 찾을 수 없습니다.'));
+          var home = el('a', null, '홈으로 돌아가기');
+          home.href = '/';
+          empty.appendChild(home);
+        } else {
+          empty.appendChild(el('p', null, '게시글이 없습니다.'));
+        }
+        timeline.appendChild(empty);
+        return;
+      }
+
+      var items = cards.map(function (card) {
         var t = card.querySelector('.post-card-date');
-        if (t) t.style.display = 'none';
-        dPosts.appendChild(card);
+        if (t) t.style.display = 'none'; // 그룹 헤더와 중복되는 개별 날짜 숨김
+        return { date: new Date(card.getAttribute('data-date')), node: card };
       });
 
       timeline.innerHTML = '';
-      timeline.appendChild(frag);
+      timeline.appendChild(makeGrouped(items));
     }
 
-    /* ---------- 2. 개별 글: "M월 N주차" 배지 채우기 ---------- */
+    /* ---------- 2. 개별 글: "M월 N주차" 배지 ---------- */
     function fillWeekBadges() {
       var spans = document.querySelectorAll('.js-week');
       for (var i = 0; i < spans.length; i++) {
@@ -662,30 +698,84 @@ img { max-width: 100%; height: auto; }
       }
     }
 
-    /* ---------- 3. 사이드바: 전체 글을 연 > 월 > 주 > 일 트리로 ---------- */
+    /* ---------- 3. 예비 렌더링: 위젯이 본문을 못 그리면 피드로 직접 그림 ---------- */
+    function buildFallback() {
+      var box = document.getElementById('content-fallback');
+      if (!box) return;
+      if (hasClass(document.body, 'view-error')) return;
+
+      if (hasClass(document.body, 'view-item')) {
+        if (document.querySelector('.post-single')) return; // 서버 렌더링 정상
+        fetchJson('/feeds/posts/default?alt=json&max-results=150', function (entries) {
+          if (!entries) return;
+          var here = location.pathname;
+          for (var i = 0; i < entries.length; i++) {
+            var link = altLink(entries[i]);
+            var path;
+            try { path = new URL(link).pathname; } catch (e) { continue; }
+            if (path !== here) continue;
+
+            var entry = entries[i];
+            var d = new Date(entry.published.$t);
+            var art = el('article', 'post post-single');
+            var head = el('header', 'post-header');
+            head.appendChild(el('h1', 'post-title', entry.title.$t || '(제목 없음)'));
+            var dateLine = el('div', 'post-date-line');
+            dateLine.appendChild(el('time', 'post-date',
+              d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일 (' + DAY_NAMES[d.getDay()] + ')'));
+            dateLine.appendChild(el('span', 'post-week', (d.getMonth() + 1) + '월 ' + weekOfMonth(d) + '주차'));
+            head.appendChild(dateLine);
+            art.appendChild(head);
+            var body = el('div', 'post-body');
+            body.innerHTML = (entry.content && entry.content.$t) || (entry.summary && entry.summary.$t) || '';
+            art.appendChild(body);
+            box.appendChild(art);
+            var nav = el('nav', 'pager');
+            var home = el('a', 'pager-home', '목록');
+            home.href = '/';
+            nav.appendChild(home);
+            box.appendChild(nav);
+            return;
+          }
+        });
+      } else {
+        if (document.getElementById('timeline')) return; // 서버 렌더링 정상
+        fetchJson('/feeds/posts/summary?alt=json&max-results=500', function (entries) {
+          if (!entries || !entries.length) return;
+          var items = [];
+          entries.forEach(function (entry) {
+            var link = altLink(entry);
+            var d = new Date(entry.published.$t);
+            if (!link || isNaN(d.getTime())) return;
+            var card = el('article', 'post-card');
+            var a = el('a', 'post-card-link');
+            a.href = link;
+            a.appendChild(el('h2', 'post-card-title', entry.title.$t || '(제목 없음)'));
+            var snippet = ((entry.summary && entry.summary.$t) || '').replace(/\s+/g, ' ').trim();
+            if (snippet.length > 130) snippet = snippet.slice(0, 130) + '…';
+            if (snippet) a.appendChild(el('p', 'post-card-snippet', snippet));
+            card.appendChild(a);
+            items.push({ date: d, node: card });
+          });
+          items.sort(function (a, b) { return b.date - a.date; });
+          box.className = 'timeline';
+          box.appendChild(makeGrouped(items));
+        });
+      }
+    }
+
+    /* ---------- 4. 사이드바: 전체 글 보관함 트리 ---------- */
     function buildArchive() {
       var box = document.getElementById('archive-tree');
       if (!box) return;
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/feeds/posts/summary?alt=json&max-results=500', true);
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState !== 4) return;
-        if (xhr.status !== 200) {
+      fetchJson('/feeds/posts/summary?alt=json&max-results=500', function (entries) {
+        if (entries === null) {
           box.innerHTML = '';
           box.appendChild(el('p', 'archive-empty', '보관함을 불러오지 못했습니다.'));
           return;
         }
-        var entries;
-        try {
-          var data = JSON.parse(xhr.responseText);
-          entries = (data.feed && data.feed.entry) || [];
-        } catch (e) {
-          entries = [];
-        }
         renderArchive(box, entries);
-      };
-      xhr.send();
+      });
     }
 
     function renderArchive(box, entries) {
@@ -697,10 +787,7 @@ img { max-width: 100%; height: auto; }
 
       var posts = [];
       entries.forEach(function (entry) {
-        var link = '';
-        (entry.link || []).forEach(function (l) {
-          if (l.rel === 'alternate') link = l.href;
-        });
+        var link = altLink(entry);
         var d = new Date(entry.published.$t);
         if (!link || isNaN(d.getTime())) return;
         posts.push({ title: entry.title.$t || '(제목 없음)', url: link, date: d });
@@ -708,7 +795,6 @@ img { max-width: 100%; height: auto; }
 
       posts.sort(function (a, b) { return b.date - a.date; });
 
-      // 연 > 월 > 주 > 일 중첩 맵 구성 (표시 순서 유지를 위해 배열 사용)
       var years = [];
       function getOrPush(arr, key, make) {
         for (var i = 0; i < arr.length; i++) {
@@ -779,16 +865,17 @@ img { max-width: 100%; height: auto; }
       });
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function () {
-        buildTimeline();
-        fillWeekBadges();
-        buildArchive();
-      });
-    } else {
+    function init() {
       buildTimeline();
       fillWeekBadges();
+      buildFallback();
       buildArchive();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
     }
   })();
   //]]>
