@@ -406,6 +406,44 @@ img { max-width: 100%; height: auto; }
 
 .archive-empty { color: var(--text-soft); font-size: 0.85rem; }
 
+/* ---------- comments ---------- */
+
+.comments { margin-top: 48px; }
+
+.comments-h {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.comment {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.comment-author { margin: 0 0 4px; font-weight: 700; font-size: 0.9rem; }
+.comment-time { font-weight: 400; color: var(--text-soft); font-size: 0.78rem; margin-left: 8px; }
+.comment-body { font-size: 0.95rem; line-height: 1.65; }
+.comment-body p { margin: 0 0 0.6em; }
+.comment-empty { color: var(--text-soft); font-size: 0.88rem; padding: 10px 0; }
+
+.comment-form-wrap { margin-top: 18px; }
+
+.comment-frame {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.comment-alt {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  text-align: right;
+}
+
 /* ---------- error / empty ---------- */
 
 .error-page, .empty-state {
@@ -486,6 +524,21 @@ img { max-width: 100%; height: auto; }
                       <data:post.body/>
                     </div>
                   </article>
+
+                  <b:if cond='data:view.isPost and data:post.allowComments'>
+                    <section class='comments' expr:data-post-id='data:post.id' id='comments'>
+                      <h2 class='comments-h'>댓글</h2>
+                      <div class='comment-list'>
+                        <p class='comment-empty'>댓글을 불러오는 중&#8230;</p>
+                      </div>
+                      <div class='comment-form-wrap'>
+                        <iframe class='comment-frame' expr:src='"https://www.blogger.com/comment/frame/" + data:blog.blogId + "/" + data:post.id + "?po=true&amp;hl=ko"' frameborder='0' height='260' id='comment-frame' scrolling='auto' width='100%'/>
+                        <p class='comment-alt'>
+                          <a expr:href='"https://www.blogger.com/comment.g?blogID=" + data:blog.blogId + "&amp;postID=" + data:post.id' rel='nofollow' target='_blank'>새 창에서 댓글 쓰기</a>
+                        </p>
+                      </div>
+                    </section>
+                  </b:if>
                 </b:loop>
 
                 <nav class='pager'>
@@ -709,6 +762,47 @@ img { max-width: 100%; height: auto; }
       }
     }
 
+    /* ---------- 댓글: 게시글의 댓글 피드를 불러와 표시 ---------- */
+    function fmtDateTime(d) {
+      var h = d.getHours(), min = d.getMinutes();
+      return d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + '. '
+        + (h < 10 ? '0' + h : h) + ':' + (min < 10 ? '0' + min : min);
+    }
+
+    function loadComments() {
+      var sec = document.getElementById('comments');
+      if (!sec || sec.getAttribute('data-loaded')) return;
+      var postId = sec.getAttribute('data-post-id');
+      if (!postId) return;
+      sec.setAttribute('data-loaded', '1');
+      var list = sec.querySelector('.comment-list');
+      if (!list) return;
+
+      fetchJson('/feeds/' + postId + '/comments/default?alt=json&max-results=200', function (entries) {
+        list.innerHTML = '';
+        if (entries === null) {
+          list.appendChild(el('p', 'comment-empty', '댓글을 불러오지 못했습니다.'));
+          return;
+        }
+        if (!entries.length) {
+          list.appendChild(el('p', 'comment-empty', '아직 댓글이 없습니다. 첫 댓글을 남겨보세요.'));
+          return;
+        }
+        entries.forEach(function (entry) {
+          var item = el('div', 'comment');
+          var author = (entry.author && entry.author[0] && entry.author[0].name && entry.author[0].name.$t) || '익명';
+          var head = el('p', 'comment-author', author);
+          var d = new Date(entry.published.$t);
+          if (!isNaN(d.getTime())) head.appendChild(el('span', 'comment-time', fmtDateTime(d)));
+          item.appendChild(head);
+          var body = el('div', 'comment-body');
+          body.innerHTML = (entry.content && entry.content.$t) || '';
+          item.appendChild(body);
+          list.appendChild(item);
+        });
+      });
+    }
+
     /* ---------- 3. 예비 렌더링: 위젯이 본문을 못 그리면 피드로 직접 그림 ---------- */
     function buildFallback() {
       var box = document.getElementById('content-fallback');
@@ -741,6 +835,30 @@ img { max-width: 100%; height: auto; }
             body.innerHTML = (entry.content && entry.content.$t) || (entry.summary && entry.summary.$t) || '';
             art.appendChild(body);
             box.appendChild(art);
+
+            // 예비 렌더링에서도 댓글 표시/입력 지원 (피드 항목 id에서 블로그/글 번호 추출)
+            var ids = ((entry.id && entry.id.$t) || '').match(/blog-(\d+)\.post-(\d+)/);
+            if (ids) {
+              var sec = el('section', 'comments');
+              sec.id = 'comments';
+              sec.setAttribute('data-post-id', ids[2]);
+              sec.appendChild(el('h2', 'comments-h', '댓글'));
+              var list = el('div', 'comment-list');
+              list.appendChild(el('p', 'comment-empty', '댓글을 불러오는 중…'));
+              sec.appendChild(list);
+              var wrap = el('div', 'comment-form-wrap');
+              var ifr = document.createElement('iframe');
+              ifr.className = 'comment-frame';
+              ifr.src = 'https://www.blogger.com/comment/frame/' + ids[1] + '/' + ids[2] + '?po=true&hl=ko';
+              ifr.width = '100%';
+              ifr.height = '260';
+              ifr.frameBorder = '0';
+              wrap.appendChild(ifr);
+              sec.appendChild(wrap);
+              box.appendChild(sec);
+              loadComments();
+            }
+
             var nav = el('nav', 'pager');
             var home = el('a', 'pager-home', '목록');
             home.href = '/';
@@ -881,6 +999,7 @@ img { max-width: 100%; height: auto; }
       fillWeekBadges();
       buildFallback();
       buildArchive();
+      loadComments();
     }
 
     if (document.readyState === 'loading') {
