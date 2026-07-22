@@ -532,7 +532,7 @@ img { max-width: 100%; height: auto; }
                         <p class='comment-empty'>댓글을 불러오는 중&#8230;</p>
                       </div>
                       <div class='comment-form-wrap'>
-                        <iframe class='comment-frame' expr:src='"https://www.blogger.com/comment/frame/" + data:blog.blogId + "/" + data:post.id + "?po=true&amp;hl=ko"' frameborder='0' height='260' id='comment-frame' scrolling='auto' width='100%'/>
+                        <iframe allowtransparency='true' class='comment-frame' expr:src='data:post.commentFormIframeSrc' frameborder='0' height='320' id='comment-editor' name='comment-editor' scrolling='auto' width='100%'/>
                         <p class='comment-alt'>
                           <a expr:href='"https://www.blogger.com/comment.g?blogID=" + data:blog.blogId + "&amp;postID=" + data:post.id' rel='nofollow' target='_blank'>새 창에서 댓글 쓰기</a>
                         </p>
@@ -847,13 +847,11 @@ img { max-width: 100%; height: auto; }
               list.appendChild(el('p', 'comment-empty', '댓글을 불러오는 중…'));
               sec.appendChild(list);
               var wrap = el('div', 'comment-form-wrap');
-              var ifr = document.createElement('iframe');
-              ifr.className = 'comment-frame';
-              ifr.src = 'https://www.blogger.com/comment/frame/' + ids[1] + '/' + ids[2] + '?po=true&hl=ko';
-              ifr.width = '100%';
-              ifr.height = '260';
-              ifr.frameBorder = '0';
-              wrap.appendChild(ifr);
+              var write = el('a', null, '댓글 쓰기');
+              write.href = 'https://www.blogger.com/comment.g?blogID=' + ids[1] + '&postID=' + ids[2];
+              write.target = '_blank';
+              write.rel = 'nofollow';
+              wrap.appendChild(write);
               sec.appendChild(wrap);
               box.appendChild(sec);
               loadComments();
